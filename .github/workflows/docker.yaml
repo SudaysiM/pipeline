@@ -13,10 +13,10 @@ jobs:          # define jobs to be run in this workflow
       - name: get repo
         uses: actions/checkout@v3   # checkout action to get the code from the repo
 
-      - name: login to dockerhub      
-        run: |             # login to dockerhub using secrets that are in github repo settings
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \     # use a token to login/temporary login
-            -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin  # username from secrets
+    -name: login to dockerhub
+  run: |
+    echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+      -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: build image       # build docker image using dockerfile in the repo
         run: |        # build the docker image and tag it with latest tag
