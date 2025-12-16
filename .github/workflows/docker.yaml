@@ -1,0 +1,27 @@
+name: docker-pipeline  # name of workflow human readeable to find in the logs
+
+on:         # this workflow is going to run when i do git push
+  push:
+    branches:
+      - main     # run only on main branch/ to prevent other branches from triggering this workflow
+
+jobs:          # define jobs to be run in this workflow
+  docker-build: 
+    runs-on: ubuntu-latest    # the type of runner that the job will run on runner/computer/vm
+
+    steps:            # steps represent a sequence of tasks to be executed
+      - name: get repo
+        uses: actions/checkout@v3   # checkout action to get the code from the repo
+
+      - name: login to dockerhub      
+        run: |             # login to dockerhub using secrets that are in github repo settings
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \     # use a token to login/temporary login
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin  # username from secrets
+
+      - name: build image       # build docker image using dockerfile in the repo
+        run: |        # build the docker image and tag it with latest tag
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pipe:latest 
+
+      - name: push image  # push the built image to dockerhub
+        run: |     # push the docker image to dockerhub repository
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/pipe:latest   # push to dockerhub
