@@ -14,14 +14,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: login to dockerhub
-        run: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
-            -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: build image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pipe:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/pipe:latest .
 
       - name: push image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/pipe:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/pipe:latest
