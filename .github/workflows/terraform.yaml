@@ -10,7 +10,7 @@ on:
 
 jobs:
   terraform:
-    runs-on: ubuntu-latest # sm
+    runs-on: ubuntu-latest # ms
 
     steps:
       # get the code
