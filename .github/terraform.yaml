@@ -1,0 +1,28 @@
+name: Terraform CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. download the repository code
+      - uses: actions/checkout@v4
+
+      # 2. install terraform
+      - uses: hashicorp/setup-terraform@v3
+
+      # 3. check terraform formatting (linting-automatically skimming through code for errors)
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive
+
+      # 4. initialise terraform 
+      - name: Terraform init
+        run: terraform init -backend=false
+
+      # 5. validate terraform configuration
+      - name: Terraform validate
+        run: terraform validate
