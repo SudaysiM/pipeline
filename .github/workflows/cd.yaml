@@ -20,5 +20,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t yourusername/pipe:latest .
-          docker push yourusername/pipe:latest
+          docker build -t sudaysim/pipe:latest .
+          docker push sudaysim/pipe:latest
