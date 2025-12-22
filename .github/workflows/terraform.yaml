@@ -2,31 +2,45 @@ name: Terraform CI
 
 on:
   push:
-    paths:
-      - terraform/**
   pull_request:
-    paths:
-      - terraform/**
 
 jobs:
   terraform:
-    runs-on: ubuntu-latest # ms
+    runs-on: ubuntu-latest
 
     steps:
-      # get the code
       - uses: actions/checkout@v4
 
-      # install terraform
       - uses: hashicorp/setup-terraform@v3
 
-      # terraform formatting (linting- skimming through not testing) 
-      - name: Terraform fmt
+      - name: Terraform format check
         run: terraform fmt -check -recursive
 
-      
       - name: Terraform init
         run: terraform init -backend=false
 
-      
+      - name: Terraform validate
+        run: terraform validate
+name: Terraform CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform format check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform init
+        run: terraform init -backend=false
+
       - name: Terraform validate
         run: terraform validate
